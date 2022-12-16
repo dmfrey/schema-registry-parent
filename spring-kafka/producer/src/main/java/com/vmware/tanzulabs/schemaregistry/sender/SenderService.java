@@ -3,8 +3,10 @@ package com.vmware.tanzulabs.schemaregistry.sender;
 import com.vmware.tanzulabs.schemaregistry.records.Sensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.schema.registry.avro.AvroSchemaRegistryClientMessageConverter;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +21,17 @@ public class SenderService {
     private final KafkaTemplate<String, byte[]> sensorKafkaTemplate;
     private final AvroSchemaRegistryClientMessageConverter converter;
 
-    SenderService( final KafkaTemplate<String, byte[]> sensorKafkaTemplate, final AvroSchemaRegistryClientMessageConverter converter ) {
+    private final String topic;
+
+    SenderService(
+            final KafkaTemplate<String, byte[]> sensorKafkaTemplate,
+            final AvroSchemaRegistryClientMessageConverter converter,
+            @Value( "${spring.kafka.template.default-topic}") final String topic
+    ) {
 
         this.sensorKafkaTemplate = sensorKafkaTemplate;
         this.converter = converter;
+        this.topic = topic;
 
     }
 
@@ -32,10 +41,15 @@ public class SenderService {
         var random = new Random();
 
         var sensor = new Sensor( sensorId, random.nextFloat(), random.nextFloat(), random.nextFloat() );
-        var message = this.converter.toMessage( sensor, new MessageHeaders( Map.of() ) );
+        var message =
+                this.converter.toMessage( sensor, new MessageHeaders(
+                        Map.of(
+                                KafkaHeaders.TOPIC, this.topic
+                        )
+                ));
 
         assert message != null;
-        this.sensorKafkaTemplate.send( "sensors-2", sensor.getId().toString(), ( (byte[]) message.getPayload() ) );
+        this.sensorKafkaTemplate.send( message );
         log.info( "Sensor [{}] sent!", sensor );
 
     }

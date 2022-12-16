@@ -1,5 +1,6 @@
 
 logging.level:
+  org.springframework.kafka: DEBUG
   com.vmware.tanzulabs.schemaregistry: DEBUG
 
 server:
@@ -19,7 +20,7 @@ spring:
       schema.registry.url: http://localhost:8990
       group.id: ${spring.application.name}
     template:
-      default-topic: sensors-5
+      default-topic: sensors
 
   cloud:
 

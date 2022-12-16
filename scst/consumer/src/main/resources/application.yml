@@ -29,7 +29,7 @@ spring:
 
       bindings:
         sensors-in-0:
-          destination: sensors-5
+          destination: sensors
           group: ${spring.application.name}
           content-type: application/*+avro
 

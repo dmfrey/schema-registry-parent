@@ -17,7 +17,7 @@ spring:
     properties:
       schema.registry.url: http://localhost:8990
     template:
-      default-topic: sensors-2
+      default-topic: sensors
 
   cloud:
 
