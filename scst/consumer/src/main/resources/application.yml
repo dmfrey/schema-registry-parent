@@ -1,6 +1,6 @@
 
 logging.level:
-  org.springframework.cloud: DEBUG
+  org.springframework.cloud: INFO
   com.vmware.tanzulabs.schemaregistry: DEBUG
 
 server:

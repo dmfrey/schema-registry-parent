@@ -1,6 +1,6 @@
 
 logging.level:
-  org.springframework.kafka: DEBUG
+  org.springframework.kafka: INFO
   com.vmware.tanzulabs.schemaregistry: DEBUG
 
 server:
