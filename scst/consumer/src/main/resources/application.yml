@@ -1,0 +1,35 @@
+
+logging.level:
+  com.vmware.tanzulabs.schemaregistry: DEBUG
+
+server:
+  port: 8180
+
+spring:
+
+  cloud:
+
+    schema-registry-client:
+      endpoint: http://localhost:8990
+
+    schema:
+      avro:
+        prefix: vnd
+        schema-locations: classpath:avro/sensor.avsc
+
+    stream:
+
+      function:
+        bindings:
+          sensors: sensors-in-0
+
+      bindings:
+        sensors-in-0:
+          destination: sensors-1
+          content-type: application/*+avro
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

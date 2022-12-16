@@ -1,0 +1,27 @@
+
+logging.level:
+  com.vmware.tanzulabs.schemaregistry: DEBUG
+
+server:
+  port: 8280
+
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  cloud:
+
+    schema-registry-client:
+      endpoint: http://localhost:8990
+
+    schema:
+      avro:
+        prefix: vnd
+        schema-locations: classpath:avro/sensor.avsc
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
