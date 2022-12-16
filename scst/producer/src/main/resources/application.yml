@@ -21,7 +21,7 @@ spring:
 
       bindings:
         sensors-out-0:
-          destination: sensors-1
+          destination: sensors-5
           content-type: application/*+avro
 
 management:

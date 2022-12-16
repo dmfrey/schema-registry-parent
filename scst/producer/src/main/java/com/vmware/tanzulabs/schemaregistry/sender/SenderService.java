@@ -27,7 +27,12 @@ public class SenderService {
         var sensorId = "scst-" + UUID.randomUUID();
         var random = new Random();
 
-        var sensor = new Sensor( sensorId, random.nextFloat(), random.nextFloat(), random.nextFloat() );
+        var sensor = Sensor.newBuilder()
+                .setId( sensorId )
+                .setAcceleration( random.nextFloat() )
+                .setTemperature( random.nextFloat() )
+                .setVelocity( random.nextFloat() )
+                .build();
 
         this.streamBridge.send( "sensors-out-0", sensor, MimeType.valueOf( "application/+avro" ) );
         log.info( "Sensor [{}] sent!", sensor );

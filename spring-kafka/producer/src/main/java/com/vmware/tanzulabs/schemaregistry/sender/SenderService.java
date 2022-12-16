@@ -16,12 +16,12 @@ import java.util.UUID;
 public class SenderService {
 
     private static final Logger log = LoggerFactory.getLogger( SenderService.class );
-    private final KafkaTemplate<String, byte[]> template;
+    private final KafkaTemplate<String, byte[]> sensorKafkaTemplate;
     private final AvroSchemaRegistryClientMessageConverter converter;
 
-    SenderService( final KafkaTemplate<String, byte[]> template, final AvroSchemaRegistryClientMessageConverter converter ) {
+    SenderService( final KafkaTemplate<String, byte[]> sensorKafkaTemplate, final AvroSchemaRegistryClientMessageConverter converter ) {
 
-        this.template = template;
+        this.sensorKafkaTemplate = sensorKafkaTemplate;
         this.converter = converter;
 
     }
@@ -35,7 +35,7 @@ public class SenderService {
         var message = this.converter.toMessage( sensor, new MessageHeaders( Map.of() ) );
 
         assert message != null;
-        this.template.send( "sensors-1", sensor.getId().toString(), ( (byte[]) message.getPayload() ) );
+        this.sensorKafkaTemplate.send( "sensors-2", sensor.getId().toString(), ( (byte[]) message.getPayload() ) );
         log.info( "Sensor [{}] sent!", sensor );
 
     }

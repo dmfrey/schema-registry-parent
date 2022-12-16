@@ -1,11 +1,15 @@
 
 logging.level:
+  org.springframework.cloud: DEBUG
   com.vmware.tanzulabs.schemaregistry: DEBUG
 
 server:
   port: 8180
 
 spring:
+
+  application:
+    name: scst-consumer
 
   cloud:
 
@@ -25,7 +29,8 @@ spring:
 
       bindings:
         sensors-in-0:
-          destination: sensors-1
+          destination: sensors-5
+          group: ${spring.application.name}
           content-type: application/*+avro
 
 management:

@@ -7,8 +7,19 @@ server:
 
 spring:
 
+  application:
+    name: spring-kafka-consumer
+
   kafka:
     bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+    properties:
+      schema.registry.url: http://localhost:8990
+      group.id: ${spring.application.name}
+    template:
+      default-topic: sensors-5
 
   cloud:
 

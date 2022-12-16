@@ -1,25 +1,31 @@
 package com.vmware.tanzulabs.schemaregistry.config;
 
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.cloud.stream.schema.registry.client.EnableSchemaRegistryClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+
+import java.util.Map;
 
 @Configuration
 @EnableSchemaRegistryClient
 public class KafkaConfig {
 
-//    @Value( value = "${spring.kafka.bootstrap-servers}" )
-//    private String bootstrapAddress;
-//
-//    @Bean
-//    public KafkaAdmin kafkaAdmin( AvroSerializer avroSerializer ) {
-//
-//        var configs = new HashMap<String, Object>();
-//        configs.put( AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress );
-//        configs.put( "schema.registry.url", "http://localhost:8990" );
-//        configs.put( "key.serializer", StringSerializer.class );
-//        configs.put( "value.serializer", avroSerializer );
-//
-//        return new KafkaAdmin(configs);
-//    }
+    @Bean
+    public ProducerFactory<String, byte[]> sensorProducerFactory( final KafkaProperties kafkaProperties ) {
+
+        Map<String, Object> configProps = kafkaProperties.buildProducerProperties();
+
+        return new DefaultKafkaProducerFactory<>( configProps );
+    }
+
+    @Bean
+    public KafkaTemplate<String, byte[]> sensorKafkaTemplate( ProducerFactory<String, byte[]> sensorProducerFactory ) {
+
+        return new KafkaTemplate<>( sensorProducerFactory );
+    }
 
 }

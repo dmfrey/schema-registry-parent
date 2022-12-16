@@ -1,5 +1,7 @@
 
 logging.level:
+  org.apache.kafka: INFO
+  org.springframework.kafka: TRACE
   com.vmware.tanzulabs.schemaregistry: DEBUG
 
 server:
@@ -11,12 +13,11 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: com.vmware.tanzulabs.schemaregistry.config.AvroSerializer
       value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
     properties:
       schema.registry.url: http://localhost:8990
     template:
-      default-topic: sensors-1
+      default-topic: sensors-2
 
   cloud:
 
